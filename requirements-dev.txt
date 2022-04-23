@@ -1,9 +1,0 @@
-# # These packages are only for local Development.
-# # Not to be installed in the production runtime environment.
-# # Runtime dependencies are specified in 'setup.cfg', under. 'install_requires'.
-setuptools
-sphinx
-twine 
-wheel
-
--r requirements-test.txt

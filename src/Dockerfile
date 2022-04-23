@@ -1,47 +1,32 @@
-# 0. Base Image: python:3.9-slim
-# This image is the official image from Python, which has Python 3.9 installed
-# Slim means that it only contains minimal packages.
-FROM python:3.9-slim
+ARG py=3.9
+FROM python:${py}-slim
+ENV PYTHON_VERSION=py
 
-ARG environment=prod
-ENV ENVIRONMENT=${environment}
+ARG uid=1000
+ARG gid=1000
 
-ARG extras= 
+ARG input_dir=/asset-input
+ENV INPUT_DIR=${input_dir}
+
+ARG output_dir=/asset-output
+ENV OUTPUT_DIR=${output_dir}
 
 ENV BUILD_TIME_FILE=/app/build_time
 
-# # 1. Create a (non-root) app- user account and set our working directory
-# Using UID and GID 1000 as it corresponds to the primary user on popular Linux distros 
-# This creates the directory and sets it as current,
-# for both the docker build as well as when running.
+# Run as user, not root
 RUN apt-get -y update && \
-        groupadd -r -g 1000 app-group && \
-        useradd -m -d /app -s /bin/bash -g 1000 -u 1000 app-user
-ENV PATH="/app/.local/bin:${PATH}"
-USER app-user'
+        apt-get -y install zip && \
+        groupadd -r -g ${gid} app-group && \
+        useradd -m -d /app -s /bin/bash -g ${gid} -u ${uid} app-user && \
+        mkdir -p ${INPUT_DIR} && \
+        mkdir -p ${OUTPUT_DIR}
+USER app-user
 WORKDIR /app
 
-RUN apt update \
-        && apt install -y \
-        bash \
-        netcat-openbsd
-
-# # 2. Install pinned requirments.
-# # This step could technically be skipped, but then in (step 3) our package would
-# # install whatever latest versions of its dependencies, instead of the ones we trust.
-# Copy over the requirements file with pinned production dependency versions
-COPY requirements-${ENVIRONMENT}.txt .
-# Install the pinned prioduction dependencies
-RUN pip install --upgrade pip && \
-        pip install --no-cache-dir --upgrade -r requirements-prod.txt && \
-        mkdir -p /app/logs/
-
-# # 3. Install our package and CLI program.
-# Copy over the rest of the context (I.e. the repo root-dir, minus .dockerignore)
-COPY --chown=app-user:app-group . .
-# Install the packages
-RUN pip install --no-cache-dir --upgrade .${extras} && \
-        chmod +x entrypoint.sh && \
+# Copy over the script, and make it executable
+COPY --chown=app-user:app-group lambda_pip.sh /app/script/
+ENV PATH="/app/script:${PATH}" 
+RUN chmod +x /app/script/lambda_pip.sh && \
         echo $(date -u -Iseconds) > ${BUILD_TIME_FILE}
 
-ENTRYPOINT ["/bin/bash", "/app/statup.sh", "my-app"]
+ENTRYPOINT ["lambda_pip.sh"]
