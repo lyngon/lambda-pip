@@ -1,0 +1,4 @@
+# # These packages are specifically for the production environment.
+# # All requirements MUST BE PINNED to a specific version.
+
+# TODO: Populate with pinned requirements before deploying

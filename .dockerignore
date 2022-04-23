@@ -1,0 +1,41 @@
+# # This file states what should NOT be included in the Docker build context
+
+# By default - Ignore everything 
+**
+
+# EXCEPT (!) - Explicitly only allow files explictitly required for install
+!/LICENSE
+!/setup.cfg
+!/setup.py
+!**/*requirements*.txt
+!/src/**
+!**/*.conf
+
+# Inside allowed directories, ignore unnecessary files
+**/*~
+**/*.log
+**/.DS_Store
+**/Thumbs.db
+**/.git
+**/*.venv
+**/*.log*
+**/*.md
+
+# Python-specific artefacts to ignore
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.Python
+**/env
+**/pip-log.txt
+**/.tox
+**/.coverage
+**/.coverage.*
+**/.cache
+**/nosetests.xml
+**/coverage.xml
+**/.cover
+**/.mypy_cache
+**/.pytest_cache
+**/.hypothesis
+**/*.egg-info

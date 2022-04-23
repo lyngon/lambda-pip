@@ -1,0 +1,30 @@
+# # These packages are only for Dev, Test and/or Quality Assurance environments.
+# # Not to be installed in the production runtime environment.
+# # Runtime dependencies are specified in 'setup.cfg', under. 'install_requires'.
+
+# # Dev toolss - (Optional), Mainly a matter of preference:
+# Black - Strict code formatting
+black
+# CodeCov - Integration with codecov.io, code coverage service
+codecov
+# Flake8 - Vanilla code formatting
+flake8
+# ISort - Auto-organize imports
+isort
+# MyPy - Type Checking
+mypy
+
+# # Testing tools:
+# Pytest - Unit-testing
+pytest
+# Benchmarking addon for pytest
+pytest-benchmark
+# Code-coverage addon for pytest
+pytest-cov
+# Datafiles addon for pytest
+pytest-datafiles
+# Timoute addon for pytest
+pytest-timeout
+
+# # Install the local package in 'editable' mode with 'dev' extras (if any):
+-e .[dev,aws,api]

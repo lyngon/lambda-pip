@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+
+  svc-main_package:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        extras: api
+    image: lyngon/main_package:latest
+    container_name: main_package
+    env_file:
+      - .env
