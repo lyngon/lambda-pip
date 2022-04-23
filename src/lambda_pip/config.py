@@ -14,18 +14,18 @@ Including but not limited to:
 __author__ = "Anders Åström"
 __contact__ = "anders@lyngon.com"
 __copyright__ = "2022, Lyngon Pte. Ltd."
-__licence__ = """Proprietary Software
+__license__ = """MIT License
 
 Copyright (c) 2022 Lyngon Pte. Ltd.
 
-This software and associated documentation files (the "Software") is proprietary.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-The the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the Software
-is furnished to do so, is exclusively limited to Lyngon Pte. Ltd. and is subject
-to the following conditions:
-
-The above copyright notice and this notice shall be included in all
+The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -123,22 +123,6 @@ argparser.add_argument(
     help="AWS region",
 )
 
-argparser.add_argument(
-    "--api_host",
-    env_var="API_HOST",
-    default="127.0.0.1",
-    type=str,
-    help="API listen adapter",
-)
-argparser.add_argument(
-    "-p",
-    "--api_port",
-    env_var="API_PORT",
-    default=3000,
-    type=int,
-    help="API listen port",
-)
-
 # Parse Args/Env vars, and assign to typed vars for more pleasant Dev experience
 args = argparser.parse_args()
 
@@ -146,7 +130,7 @@ args = argparser.parse_args()
 if args.version:
     import importlib.metadata
 
-    package_version = importlib.metadata.version("main_package")
+    package_version = importlib.metadata.version("lambda_pip")
     print(package_version)
     exit(0)
 
@@ -155,9 +139,6 @@ environment: str = args.environment
 
 aws_account: str = args.aws_account
 aws_region: str = args.aws_region
-package_name: str = args.service_name
-api_host: str = args.api_host
-api_port: int = args.api_port
 
 ###############################################################################
 # #                      Logging Configuration                              # #

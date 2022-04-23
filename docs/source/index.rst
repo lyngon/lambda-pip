@@ -1,7 +1,7 @@
 
 .. include :: banner.rst
 
-{{main_package}} Documentation
+{{lambda_pip}} Documentation
 =======================
 
 .. toctree::
